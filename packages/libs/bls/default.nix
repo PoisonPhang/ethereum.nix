@@ -1,7 +1,8 @@
 {
   cmake,
+  clang,
   fetchFromGitHub,
-  gmp,
+  gmpxx,
   stdenv,
 }:
 stdenv.mkDerivation rec {
@@ -16,15 +17,20 @@ stdenv.mkDerivation rec {
     hash = "sha256-fHwNiZ0B5ow9GBWjO5c+rpK/jlziaMF5Bh+HQayIBUI=";
   };
 
-  nativeBuildInputs = [cmake];
-  buildInputs = [gmp];
+  nativeBuildInputs = [cmake clang];
+  buildInputs = [gmpxx];
 
   # ETH2.0 spec
-  CFLAGS = [''-DBLS_ETH''];
+  CFLAGS = [''-DBLS_ETH -DCMAKE_CXX_COMPILER=clang++''];
 
   meta = {
     description = "BLS threshold signature";
     homepage = "https://github.com/herumi/bls";
-    platforms = ["x86_64-linux" "aarch64-darwin"];
+    platforms = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+      ];
   };
 }
